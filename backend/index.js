@@ -10,7 +10,7 @@ const PORT = process.env.BACKEND_PORT || 3001;
 // db connexion
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
-  host: "localhost",
+  host: "db",
   database: process.env.POSTGRES_DB,
   password: process.env.POSTGRES_PASSWORD,
   port: process.env.POSTGRES_PORT,
@@ -28,8 +28,6 @@ app.get("/messages", async (req, res) => {
     res.status(500).send("Erreur serveur");
   }
 });
-
-// 2nd API route: write a new message
 
 app.listen(PORT, () => {
   console.log(`✅ Backend pigeon-wings running on http://localhost:${PORT}`);
