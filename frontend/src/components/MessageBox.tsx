@@ -1,21 +1,39 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 interface Props {
   children: string;
+  timestamp: React.ReactNode;
   color?: string;
 }
 
-const MessageBox = ({ children, color = "#62048eff" }: Props) => {
+const MessageBox = ({ children, color = "#62048eff", timestamp }: Props) => {
   return (
     <Box
       sx={{
+        position: "relative",
+        width: "fit-content",
         borderRadius: "6px",
         padding: "10px",
         marginY: "1.5rem",
+        pr: 8,
         bgcolor: color,
       }}
     >
-      {children}
+      <Typography variant="body1">{children}</Typography>
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 1,
+          right: 1,
+          display: "flex",
+          alignItems: "center",
+          color: "#c45df3ff",
+        }}
+      >
+        <Typography variant="caption" sx={{ mr: 0.5 }}>
+          {timestamp}
+        </Typography>
+      </Box>
     </Box>
   );
 };
