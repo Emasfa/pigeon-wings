@@ -5,6 +5,7 @@ const express = require("express");
 const { Pool } = require("pg");
 
 const app = express();
+const cors = require("cors");
 const PORT = process.env.BACKEND_PORT || 3001;
 
 const pool = new Pool({
@@ -15,6 +16,7 @@ const pool = new Pool({
   port: process.env.POSTGRES_PORT,
 });
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/messages", async (req, res) => {
