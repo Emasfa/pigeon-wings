@@ -1,5 +1,5 @@
 require("dotenv").config({ path: "../.env" });
-console.log("Config backend: process.env.POSTGRES_PORT");
+console.log(`Config backend: ${process.env.POSTGRES_PORT}`);
 
 const express = require("express");
 const { Pool } = require("pg");
@@ -7,7 +7,6 @@ const { Pool } = require("pg");
 const app = express();
 const PORT = process.env.BACKEND_PORT || 3001;
 
-// db connexion
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
   host: "db",
@@ -18,17 +17,26 @@ const pool = new Pool({
 
 app.use(express.json());
 
-// 1st API route: get all messages
 app.get("/messages", async (req, res) => {
   try {
-    const results = await pool.query("SELECT * FROM message;");
+    const results = await pool.query("SELECT * FROM messages;");
     res.json(results.rows);
   } catch (err) {
     console.error("Erreur lors de la requête SQL:", err);
-    res.status(500).send("Erreur serveur");
+    res.status(500).send("Erreur serveur (500)");
+  }
+});
+
+app.get("/users", async (req, res) => {
+  try {
+    const results = await pool.query("SELECT * FROM users;");
+    res.json(results.rows);
+  } catch {
+    console.error("Erreur lors de la requête SQL:", err);
+    res.status(500).send("Erreur serveur (500)");
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Backend pigeon-wings running on http://localhost:${PORT}`);
+  console.log(`✅ Backend piegon-wings running on http://localhost:${PORT}`);
 });
