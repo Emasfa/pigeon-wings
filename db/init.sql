@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT now(),
-    user_id INTEGER REFERENCES users(id)
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
 
 INSERT INTO users (username)
@@ -19,4 +19,5 @@ VALUES ('Johnny B. Goode');
 INSERT INTO messages (content, user_id)
 VALUES 
   ('Hello World !', 1),
-  ('This is a second message.', 1);
+  ('This is a second message.', 1),
+  ('Lorem ipsum is a text from cicero, and starts in the middle of a cut off sentence from ''The Extremes of Good and Evil''.', 1);
