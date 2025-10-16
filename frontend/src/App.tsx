@@ -32,22 +32,26 @@ function App() {
 
   return (
     <>
+      <AppBar
+        component="nav"
+        position="sticky"
+        sx={{ bgcolor: "#c7c6c6ff", top: 0 }}
+      >
+        <Box display="flex" alignItems="center" gap={2} sx={{ padding: 0.5 }}>
+          <Bird size={60} color="#62048eff" strokeWidth={1.5} />
+          <Typography
+            sx={{
+              fontFamily: '"Bungee", sans-serif',
+            }}
+            variant="h3"
+            color="#62048eff"
+          >
+            Pigeon Wings
+          </Typography>
+        </Box>
+      </AppBar>
       <Grid container spacing={2}>
-        <AppBar component="nav" sx={{ bgcolor: "#e1e1e1ff" }}>
-          <Box display="flex" alignItems="center" gap={2} sx={{ padding: 0.5 }}>
-            <Bird size={60} color="#62048eff" strokeWidth={1.5} />
-            <Typography
-              sx={{
-                fontFamily: '"Bungee", sans-serif',
-              }}
-              variant="h3"
-              color="#62048eff"
-            >
-              Pigeon Wings
-            </Typography>
-          </Box>
-        </AppBar>
-        <Grid size={10}>
+        <Grid size={10} sx={{ paddingX: 2 }}>
           {error !== "" && <Alert severity="error">{error}</Alert>}
           {messages.map((msg: Message) => (
             <MessageBox key={msg.id} timestamp={formatTime(msg.created_at)}>

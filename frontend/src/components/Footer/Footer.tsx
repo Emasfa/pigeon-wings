@@ -13,7 +13,7 @@ const Footer = () => {
         p: 3,
         display: "flex",
         gap: 1,
-        bgcolor: "#e1e1e1ff",
+        bgcolor: "#c7c6c6ff",
         borderRadius: 0,
       }}
     >
