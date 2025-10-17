@@ -1,14 +1,14 @@
-import { IconButton, Paper, TextField } from "@mui/material";
+import { Box, IconButton, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
 import axios from "axios";
 import type { Message } from "../../types/message";
 
-interface FooterProps {
+interface SenderFooterProps {
   onSend: (msg: Message) => void;
 }
 
-const Footer = ({ onSend }: FooterProps) => {
+const SenderFooter = ({ onSend }: SenderFooterProps) => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState();
 
@@ -21,18 +21,26 @@ const Footer = ({ onSend }: FooterProps) => {
         content: trimmed,
         user_id: 1,
       })
-      .then((res) => onSend(res.data))
+      .then((res) => {
+        onSend(res.data);
+        setMessage("");
+      })
       .catch((err) => {
         setError(err.message);
         console.log(error);
       });
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
   return (
-    <Paper
-      elevation={3}
+    <Box
       sx={{
-        position: "fixed",
         bottom: 0,
         left: 0,
         right: 0,
@@ -45,6 +53,7 @@ const Footer = ({ onSend }: FooterProps) => {
     >
       <TextField
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
         value={message}
         fullWidth
         variant="outlined"
@@ -75,8 +84,8 @@ const Footer = ({ onSend }: FooterProps) => {
       >
         <SendIcon />
       </IconButton>
-    </Paper>
+    </Box>
   );
 };
 
-export default Footer;
+export default SenderFooter;
