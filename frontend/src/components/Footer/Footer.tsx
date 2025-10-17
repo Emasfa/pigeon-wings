@@ -1,7 +1,33 @@
 import { IconButton, Paper, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import { useState } from "react";
+import axios from "axios";
+import type { Message } from "../../types/message";
 
-const Footer = () => {
+interface FooterProps {
+  onSend: (msg: Message) => void;
+}
+
+const Footer = ({ onSend }: FooterProps) => {
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState();
+
+  const sendMessage = () => {
+    const trimmed = message.trim();
+    if (!trimmed) return;
+
+    axios
+      .post<Message>("http://localhost:3001/messages", {
+        content: trimmed,
+        user_id: 1,
+      })
+      .then((res) => onSend(res.data))
+      .catch((err) => {
+        setError(err.message);
+        console.log(error);
+      });
+  };
+
   return (
     <Paper
       elevation={3}
@@ -18,6 +44,8 @@ const Footer = () => {
       }}
     >
       <TextField
+        onChange={(e) => setMessage(e.target.value)}
+        value={message}
         fullWidth
         variant="outlined"
         placeholder="Type your message..."
@@ -40,7 +68,11 @@ const Footer = () => {
           },
         }}
       />
-      <IconButton sx={{ color: "#62048eff" }} aria-label="send">
+      <IconButton
+        onClick={sendMessage}
+        sx={{ color: "#62048eff" }}
+        aria-label="send"
+      >
         <SendIcon />
       </IconButton>
     </Paper>

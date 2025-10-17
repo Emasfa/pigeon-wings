@@ -20,4 +20,4 @@ INSERT INTO messages (content, user_id)
 VALUES 
   ('Hello World !', 1),
   ('This is a second message.', 1),
-  ('Lorem ipsum is a text from cicero, and starts in the middle of a cut off sentence from ''The Extremes of Good and Evil''.', 1);
+  ('Lorem ipsum was initially extracted from Cicero''s original text, ''The Extremes of Good and Evil''. Interestingly, ''lorem'' is not an actual latin word but the ''dolorem'' word cut in half on original test print by Aldus Manutius during the 16th century.', 1);

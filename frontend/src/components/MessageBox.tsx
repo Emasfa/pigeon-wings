@@ -14,7 +14,7 @@ const MessageBox = ({ children, color = "#62048eff", timestamp }: Props) => {
         width: "fit-content",
         borderRadius: "6px",
         padding: "10px",
-        marginY: "1.5rem",
+        marginY: "0.8rem",
         pr: 8,
         bgcolor: color,
       }}
@@ -30,7 +30,7 @@ const MessageBox = ({ children, color = "#62048eff", timestamp }: Props) => {
           color: "#c45df3ff",
         }}
       >
-        <Typography variant="caption" sx={{ mr: 0.5 }}>
+        <Typography variant="caption" sx={{ mr: 0.7 }}>
           {timestamp}
         </Typography>
       </Box>

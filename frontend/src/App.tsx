@@ -6,16 +6,11 @@ import axios from "axios";
 
 import { formatTime } from "./utils/formatTime";
 import Footer from "./components/Footer/Footer";
+import type { Message } from "./types/message";
 
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [error, setError] = useState("");
-
-  interface Message {
-    id: number;
-    content: string;
-    created_at: string;
-  }
 
   useEffect(() => {
     axios
@@ -59,10 +54,13 @@ function App() {
             </MessageBox>
           ))}
 
-          <MessageBox timestamp={"00:00"}>This is a static message.</MessageBox>
         </Grid>
         <Grid size={12}>
-          <Footer></Footer>
+          <Footer
+            onSend={(newMessage: Message) => {
+              setMessages((prev) => [...prev, newMessage]);
+            }}
+          ></Footer>
         </Grid>
       </Grid>
     </>

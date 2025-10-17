@@ -24,8 +24,22 @@ app.get("/messages", async (req, res) => {
     const results = await pool.query("SELECT * FROM messages;");
     res.json(results.rows);
   } catch (err) {
-    console.error("Erreur lors de la requête SQL:", err);
-    res.status(500).send("Erreur serveur (500)");
+    console.error("SQL Query error:", err);
+    res.status(500).send("Server error (500)");
+  }
+});
+
+app.post("/messages", async (req, res) => {
+  const { content, user_id } = req.body;
+  try {
+    const result = await pool.query(
+      "INSERT INTO messages (content, user_id) VALUES ($1, $2) RETURNING *",
+      [content, user_id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Error inserting message:", err);
+    res.status(500).send("Failed to insert message into the database");
   }
 });
 
@@ -34,8 +48,8 @@ app.get("/users", async (req, res) => {
     const results = await pool.query("SELECT * FROM users;");
     res.json(results.rows);
   } catch {
-    console.error("Erreur lors de la requête SQL:", err);
-    res.status(500).send("Erreur serveur (500)");
+    console.error("SQL Query error:", err);
+    res.status(500).send("Server error (500)");
   }
 });
 
