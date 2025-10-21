@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: "./.env" });
 console.log(`Config backend: ${process.env.POSTGRES_PORT}`);
 
 const express = require("express");
@@ -6,11 +6,11 @@ const { Pool } = require("pg");
 
 const app = express();
 const cors = require("cors");
-const PORT = process.env.BACKEND_PORT || 3001;
+const PORT = process.env.BACKEND_PORT;
 
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
-  host: "db",
+  host: process.env.POSTGRES_HOST,
   database: process.env.POSTGRES_DB,
   password: process.env.POSTGRES_PASSWORD,
   port: process.env.POSTGRES_PORT,
@@ -54,5 +54,5 @@ app.get("/users", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Backend piegon-wings running on http://localhost:${PORT}`);
+  console.log(`✅ Backend pigeon-wings running on http://localhost:${PORT}`);
 });
