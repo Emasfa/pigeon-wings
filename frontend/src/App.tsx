@@ -1,4 +1,4 @@
-import { Alert, AppBar, Box, Grid, Typography } from "@mui/material";
+import { Alert, AppBar, Box, Typography } from "@mui/material";
 import { Bird } from "lucide-react";
 import MessageBox from "./components/MessageBox";
 import { useState, useEffect, useRef } from "react";
