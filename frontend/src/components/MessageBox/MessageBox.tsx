@@ -1,12 +1,21 @@
 import { Box, Typography } from "@mui/material";
+import { MessagePosition } from "./messagePosition";
 
 interface Props {
   children: string;
   timestamp: React.ReactNode;
   color?: string;
+  position: MessagePosition;
+  timeColor?: string;
 }
 
-const MessageBox = ({ children, color = "#62048eff", timestamp }: Props) => {
+const MessageBox = ({
+  children,
+  color = "#62048eff",
+  timestamp,
+  position,
+  timeColor = "#c45df3ff",
+}: Props) => {
   return (
     <Box
       sx={{
@@ -17,6 +26,8 @@ const MessageBox = ({ children, color = "#62048eff", timestamp }: Props) => {
         marginY: "0.8rem",
         pr: 8,
         bgcolor: color,
+        maxWidth: 0.5,
+        alignSelf: position === MessagePosition.Left ? "start" : "end",
       }}
     >
       <Typography variant="body1">{children}</Typography>
@@ -27,10 +38,9 @@ const MessageBox = ({ children, color = "#62048eff", timestamp }: Props) => {
           right: 1,
           display: "flex",
           alignItems: "center",
-          color: "#c45df3ff",
         }}
       >
-        <Typography variant="caption" sx={{ mr: 0.7 }}>
+        <Typography variant="caption" sx={{ mr: 0.7, color: timeColor }}>
           {timestamp}
         </Typography>
       </Box>

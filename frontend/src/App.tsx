@@ -1,21 +1,27 @@
-import { Alert, AppBar, Box, Typography } from "@mui/material";
+import { Alert, AppBar, Box, Stack, Typography } from "@mui/material";
 import { Bird } from "lucide-react";
-import MessageBox from "./components/MessageBox";
+import MessageBox from "./components/MessageBox/MessageBox";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 import { formatTime } from "./utils/formatTime";
 import SenderFooter from "./components/Footer/SenderFooter";
 import type { Message } from "./types/message";
+import { MessagePosition } from "./components/MessageBox/messagePosition";
+
+const LOGGED_USER_ID = 1;
+const OTHER_USER_ID = 2;
 
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [error, setError] = useState("");
   const bottomRef = useRef<HTMLDivElement | null>(null);
-
+  console.log(messages);
   useEffect(() => {
     axios
-      .get<Message[]>("http://localhost:3001/messages")
+      .get<Message[]>("http://localhost:3001/messages", {
+        params: { user_1_id: LOGGED_USER_ID, user_2_id: OTHER_USER_ID },
+      })
       .then((res) => {
         setMessages(res.data);
         console.log(res.data);
@@ -50,17 +56,29 @@ function App() {
           </Typography>
         </Box>
       </AppBar>
-      <Box flexGrow={1} overflow="auto" px={2} pb={2}>
+      <Stack flexGrow={1} overflow="auto" px={2} pb={2}>
         {error !== "" && <Alert severity="error">{error}</Alert>}
-        {messages.map((msg: Message) => (
-          <MessageBox key={msg.id} timestamp={formatTime(msg.created_at)}>
+        {messages.map((msg) => (
+          <MessageBox
+            position={
+              msg.from_user_id === LOGGED_USER_ID
+                ? MessagePosition.Left
+                : MessagePosition.Right
+            }
+            key={msg.id}
+            timestamp={formatTime(msg.created_at)}
+            color={msg.from_user_id === OTHER_USER_ID ? "#54425d" : "#62048eff"}
+            timeColor={
+              msg.from_user_id === OTHER_USER_ID ? "#d68af8" : "#c45df3ff"
+            }
+          >
             {msg.content}
           </MessageBox>
         ))}
         <div ref={bottomRef} />
-      </Box>
+      </Stack>
       <SenderFooter
-        onSend={(newMessage: Message) => {
+        onSend={(newMessage) => {
           setMessages((prev) => [...prev, newMessage]);
         }}
       ></SenderFooter>

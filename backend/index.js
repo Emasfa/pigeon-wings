@@ -21,7 +21,11 @@ app.use(express.json());
 
 app.get("/messages", async (req, res) => {
   try {
-    const results = await pool.query("SELECT * FROM messages;");
+    const { user_1_id, user_2_id } = req.query;
+    const results = await pool.query(
+      "SELECT * FROM messages WHERE (from_user_id = $1 AND to_user_id = $2) OR (from_user_id = $2 AND to_user_id = $1);",
+      [user_1_id, user_2_id]
+    );
     res.json(results.rows);
   } catch (err) {
     console.error("SQL Query error:", err);
@@ -30,11 +34,11 @@ app.get("/messages", async (req, res) => {
 });
 
 app.post("/messages", async (req, res) => {
-  const { content, user_id } = req.body;
+  const { content, from_user_id, to_user_id } = req.body;
   try {
     const result = await pool.query(
-      "INSERT INTO messages (content, user_id) VALUES ($1, $2) RETURNING *",
-      [content, user_id]
+      "INSERT INTO messages (content, user_id) VALUES ($1, $2, $3) RETURNING *",
+      [content, from_user_id, to_user_id]
     );
     res.json(result.rows[0]);
   } catch (err) {

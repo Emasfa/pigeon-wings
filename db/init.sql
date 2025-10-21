@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 INSERT INTO users (username)
-VALUES ('Johnny B. Goode');
+VALUES ('Johnny B. Goode'), ('Clint Eastwood');
 
 INSERT INTO messages (content, from_user_id, to_user_id)
 VALUES 
