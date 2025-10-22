@@ -68,7 +68,7 @@ function App() {
             key={msg.id}
             timestamp={formatTime(msg.created_at)}
             color={msg.from_user_id === OTHER_USER_ID ? "#54425d" : "#62048eff"}
-            timeColor={
+            secondaryColor={
               msg.from_user_id === OTHER_USER_ID ? "#d68af8" : "#c45df3ff"
             }
           >
