@@ -36,6 +36,17 @@ function App() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const deleteMessage = (msg: Message) => {
+    const originalMessages = [...messages];
+    setMessages(messages.filter((m) => m.id !== msg.id));
+
+    axios.delete("http://localhost:3001/messages/" + msg.id).catch((err) => {
+      console.log(err);
+      setError(err.message);
+      setMessages(originalMessages);
+    });
+  };
+
   return (
     <Box display="flex" flexDirection="column" height="100vh">
       <AppBar
@@ -56,10 +67,18 @@ function App() {
           </Typography>
         </Box>
       </AppBar>
-      <Stack flexGrow={1} overflow="auto" px={2} pb={2}>
+      <Stack
+        flexGrow={1}
+        overflow="auto"
+        px={2}
+        pb={2}
+        sx={{ scrollBehavior: "smooth" }}
+      >
         {error !== "" && <Alert severity="error">{error}</Alert>}
         {messages.map((msg) => (
           <MessageBox
+            // onEdit={editMessage}
+            onDelete={() => deleteMessage(msg)}
             position={
               msg.from_user_id === LOGGED_USER_ID
                 ? MessagePosition.Left

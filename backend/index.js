@@ -37,7 +37,7 @@ app.post("/messages", async (req, res) => {
   const { content, from_user_id, to_user_id } = req.body;
   try {
     const result = await pool.query(
-      "INSERT INTO messages (content, user_id) VALUES ($1, $2, $3) RETURNING *",
+      "INSERT INTO messages (content, from_user_id, to_user_id) VALUES ($1, $2, $3) RETURNING *",
       [content, from_user_id, to_user_id]
     );
     res.json(result.rows[0]);
@@ -46,6 +46,32 @@ app.post("/messages", async (req, res) => {
     res.status(500).send("Failed to insert message into the database");
   }
 });
+
+app.delete("/messages/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      "DELETE FROM messages WHERE id = $1 RETURNING *;",
+      [id]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Message not found" });
+    }
+    res.status(200).json({ success: true, deleted: result.rows[0] });
+  } catch (err) {
+    console.error("Error deleting message:", err);
+    res.status(500).send("Failed to delete message from the database");
+  }
+});
+
+// app.patch("/messages", async (req, res) => {
+//   const { content, message_id } = req.body;
+//   try {
+//     const result = await pool.query(
+//       "UPDATE TABLE messages (content, user_id) VALUES"
+//     );
+//   } catch {}
+// });
 
 app.get("/users", async (req, res) => {
   try {

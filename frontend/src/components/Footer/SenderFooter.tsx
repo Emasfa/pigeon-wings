@@ -19,7 +19,8 @@ const SenderFooter = ({ onSend }: SenderFooterProps) => {
     axios
       .post<Message>("http://localhost:3001/messages", {
         content: trimmed,
-        user_id: 1,
+        from_user_id: 1,
+        to_user_id: 2,
       })
       .then((res) => {
         onSend(res.data);
