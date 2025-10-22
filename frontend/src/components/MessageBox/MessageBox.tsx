@@ -27,14 +27,15 @@ const MessageBox = ({
       sx={{
         position: "relative",
         width: "fit-content",
+        height: "fit-content",
         borderRadius: "6px",
         padding: "10px",
         marginY: "0.8rem",
         pr: 8,
         bgcolor: color,
-        maxWidth: 0.5,
-        minHeight: "2rem",
+        maxWidth: "50%",
         alignSelf: position === MessagePosition.Left ? "start" : "end",
+        overflowWrap: "break-word",
       }}
     >
       <Typography variant="body1">{children}</Typography>
