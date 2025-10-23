@@ -47,6 +47,27 @@ function App() {
     });
   };
 
+  const editMessage = (msg: Message, newContent: string) => {
+    const originalMessages = [...messages];
+
+    setMessages(
+      messages.map((m) => (m.id === msg.id ? { ...m, content: newContent } : m))
+    );
+
+    axios
+      .patch("http://localhost:3001/messages/" + msg.id, {
+        content: newContent,
+      })
+      .then((res) =>
+        setMessages((prev) => prev.map((m) => (m.id === msg.id ? res.data : m)))
+      )
+      .catch((err) => {
+        console.log(err);
+        setError(err.message);
+        setMessages(originalMessages);
+      });
+  };
+
   return (
     <Box display="flex" flexDirection="column" height="100vh">
       <AppBar
@@ -77,7 +98,16 @@ function App() {
         {error !== "" && <Alert severity="error">{error}</Alert>}
         {messages.map((msg) => (
           <MessageBox
-            // onEdit={editMessage}
+            onEdit={() => {
+              const newContent = prompt("Edit message:", msg.content);
+              if (
+                newContent &&
+                newContent.trim() !== "" &&
+                newContent !== msg.content
+              ) {
+                editMessage(msg, newContent);
+              }
+            }}
             onDelete={() => deleteMessage(msg)}
             position={
               msg.from_user_id === LOGGED_USER_ID

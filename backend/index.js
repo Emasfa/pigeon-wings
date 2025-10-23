@@ -64,14 +64,23 @@ app.delete("/messages/:id", async (req, res) => {
   }
 });
 
-// app.patch("/messages", async (req, res) => {
-//   const { content, message_id } = req.body;
-//   try {
-//     const result = await pool.query(
-//       "UPDATE TABLE messages (content, user_id) VALUES"
-//     );
-//   } catch {}
-// });
+app.patch("/messages/:id", async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+  try {
+    const result = await pool.query(
+      "UPDATE messages SET content = $1, updated_at = NOW() WHERE id = $2 RETURNING *;",
+      [content, id]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Message not found" });
+    }
+    res.status(200).json(result.rows[0]);
+  } catch (err) {
+    console.error("Error updating message:", err);
+    res.status(500).send("Failed to update message in the database");
+  }
+});
 
 app.get("/users", async (req, res) => {
   try {

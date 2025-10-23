@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,
     content TEXT NOT NULL,
+    updated_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT now(),
     from_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     to_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
